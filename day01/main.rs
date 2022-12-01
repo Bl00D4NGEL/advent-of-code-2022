@@ -23,15 +23,15 @@ fn main() {
     }
 
     // Calculate sum of group
-    let elf_cargo_sums: Vec<i32> = elf_cargo.iter().map(|cargo| cargo.iter().sum()).collect();
+    let mut elf_cargo_sums: Vec<i32> = elf_cargo.iter().map(|cargo| cargo.iter().sum()).collect();
 
-    // Get biggest cargo sum
-    let mut biggest_cargo = 0;
-    for cargo_sum in elf_cargo_sums {
-        if biggest_cargo < cargo_sum {
-            biggest_cargo = cargo_sum;
-        }
-    }
+    // Sort list so the biggest sum is the last element
+    elf_cargo_sums.sort();
 
-    println!("Biggest cargo: {:?}", biggest_cargo);
+    println!("Biggest cargo: {:?}", elf_cargo_sums.last());
+
+    // Part two requires the sum of the three biggest cargos
+    let top_three_cargo_sums: i32 = elf_cargo_sums.iter().rev().take(3).sum();
+
+    println!("Top 3 cargo sums: {:?}", top_three_cargo_sums);
 }
