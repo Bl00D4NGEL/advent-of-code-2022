@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, vec};
 
 use regex::Regex;
 
@@ -21,10 +21,13 @@ fn main() {
 
     let moves = parse_moves(move_lines);
 
-    let moved_stacks = crate_mover_9000(moves, &mut stacks);
+    let moved_stacks_9000 = crate_mover_9000(moves.clone(), &mut stacks.clone());
+    let moved_stacks_9001 = crate_mover_9001(moves.clone(), &mut stacks.clone());
 
-    let top_crates = get_top_crates(moved_stacks);
-    println!("Part 1 top crates: {:?}", top_crates);
+    let top_crates_9000 = get_top_crates(moved_stacks_9000);
+    let top_crates_9001 = get_top_crates(moved_stacks_9001);
+    println!("Part 1 top crates: {:?}", top_crates_9000);
+    println!("Part 2 top crates: {:?}", top_crates_9001);
 }
 
 fn parse_stacks(cargo_stack_lines: Vec<&str>) -> Vec<Vec<char>> {
@@ -113,10 +116,32 @@ fn crate_mover_9000(
     stacks.to_owned()
 }
 
+fn crate_mover_9001(
+    moves: Vec<(i32, usize, usize)>,
+    stacks: &mut Vec<Vec<char>>,
+) -> Vec<Vec<char>> {
+    moves
+        .into_iter()
+        .for_each(|(amount, index_from, index_to)| {
+            let crates_to_remove_from = stacks.get_mut(index_from).unwrap();
+            let mut taken = 0;
+            let mut top_crates = vec![];
+            while taken < amount {
+                let top_crate = crates_to_remove_from.pop().unwrap();
+
+                top_crates.insert(0, top_crate);
+                taken = taken + 1;
+            }
+            let creates_to_push_to = stacks.get_mut(index_to).unwrap();
+            creates_to_push_to.append(&mut top_crates);
+        });
+    stacks.to_owned()
+}
+
 fn get_top_crates(stacks: Vec<Vec<char>>) -> String {
     stacks
         .iter()
         .filter(|stack| stack.len() != 0)
-        .map(|stack| stack.first().unwrap())
+        .map(|stack| stack.last().unwrap())
         .collect()
 }
