@@ -42,20 +42,10 @@ fn task_one(contents: String) {
 }
 
 fn task_two(contents: String) {
-    let lines = contents.split("\n");
+    let lines = contents.split("\n").into_iter().collect::<Vec<&str>>();
+    let groups = lines.chunks(3);
+
     let alphabet_map = create_priority_map();
-
-    let mut groups = vec![];
-    let mut temp_group = vec![];
-    for line in lines {
-        temp_group.push(line);
-        if temp_group.len() == 3 {
-            groups.push(temp_group);
-
-            temp_group = vec![];
-        }
-    }
-
     let mut priority_sum = 0;
     for group in groups {
         let mut backpack_hashmap = HashMap::new();
