@@ -17,7 +17,7 @@ fn main() {
         .collect::<Vec<&str>>();
     // Last line of cargo_stacks is describing the "indexes", everything above are the actual boxes
     cargo_stacks.pop();
-    let mut stacks = parse_stacks(cargo_stacks);
+    let stacks = parse_stacks(cargo_stacks);
 
     let moves = parse_moves(move_lines);
 
