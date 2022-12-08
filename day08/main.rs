@@ -1,4 +1,4 @@
-use std::{fs, usize};
+use std::usize;
 
 #[derive(Debug)]
 struct Forest {
@@ -104,8 +104,7 @@ impl Forest {
 }
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
     let trees = contents
         .split("\n")

@@ -1,9 +1,8 @@
 use core::panic;
-use std::{fs, ops::RangeInclusive};
+use std::ops::RangeInclusive;
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
     let lines = contents.split("\n");
     let mut full_overlaps = 0;

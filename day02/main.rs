@@ -1,5 +1,4 @@
 use core::panic;
-use std::fs;
 
 #[derive(PartialEq)]
 enum GameResult {
@@ -39,14 +38,13 @@ impl PossibleMoves {
 }
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
-    part_one(contents.clone());
+    part_one(contents);
     part_two(contents);
 }
 
-fn part_one(contents: String) {
+fn part_one(contents: &str) {
     // Split file by new line
     let lines = contents.split("\n");
 
@@ -89,7 +87,7 @@ fn part_one(contents: String) {
     println!("Part 1: Sum points: {:?}", sum_points);
 }
 
-fn part_two(contents: String) {
+fn part_two(contents: &str) {
     // Split file by new line
     let lines = contents.split("\n");
 

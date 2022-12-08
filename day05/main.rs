@@ -1,10 +1,9 @@
-use std::{fs, vec};
+use std::vec;
 
 use regex::Regex;
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
     let lines = contents.split("\n");
 

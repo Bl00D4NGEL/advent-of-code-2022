@@ -1,8 +1,7 @@
 use std::{fs, vec};
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
     // Split file by new line
     let lines = contents.split("\n");

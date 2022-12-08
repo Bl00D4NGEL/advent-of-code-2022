@@ -1,15 +1,14 @@
 use core::panic;
-use std::{collections::HashMap, fs};
+use std::collections::HashMap;
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
-    task_one(contents.clone());
+    task_one(contents);
     task_two(contents);
 }
 
-fn task_one(contents: String) {
+fn task_one(contents: &str) {
     let lines = contents.split("\n");
     let alphabet_map = create_priority_map();
 
@@ -41,7 +40,7 @@ fn task_one(contents: String) {
     println!("Part 1: Priority sum: {:?}", priority_sum);
 }
 
-fn task_two(contents: String) {
+fn task_two(contents: &str) {
     let lines = contents.split("\n").into_iter().collect::<Vec<&str>>();
     let groups = lines.chunks(3);
 

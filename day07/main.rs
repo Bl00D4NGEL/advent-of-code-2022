@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, ops::Range};
+use std::{collections::HashMap, ops::Range};
 
 #[derive(Debug, Clone)]
 struct Command<'a> {
@@ -73,8 +73,7 @@ impl FilePath {
 }
 
 fn main() {
-    let contents =
-        fs::read_to_string("./input.txt").expect("Should have been able to read the file");
+    let contents = include_str!("./input.txt");
 
     let commands = parse_input(contents.split("\n").into_iter().collect::<Vec<&str>>());
 
