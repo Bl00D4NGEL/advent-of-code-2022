@@ -34,67 +34,28 @@ impl Position {
     pub fn close_gap_to(&mut self, other_position: &Position) {
         let x_diff = self.x - other_position.x;
         let y_diff = self.y - other_position.y;
-        // position is only above/below
-        if y_diff == 0 {
+        if [-1, 0, 1].contains(&y_diff) {
             if x_diff == 2 {
                 self.x = self.x - 1;
             }
             if x_diff == -2 {
                 self.x = self.x + 1;
             }
+
+            // This will move y diagonally
+            self.y = self.y + (y_diff * -1);
         }
 
-        if y_diff == 1 {
-            if x_diff == 2 {
-                self.x = self.x - 1;
-                self.y = self.y - 1;
-            }
-            if x_diff == -2 {
-                self.x = self.x + 1;
-                self.y = self.y - 1;
-            }
-        }
-
-        if y_diff == -1 {
-            if x_diff == 2 {
-                self.x = self.x - 1;
-                self.y = self.y + 1;
-            }
-            if x_diff == -2 {
-                self.x = self.x + 1;
-                self.y = self.y + 1;
-            }
-        }
-
-        // position is only left/right
-        if x_diff == 0 {
+        if [-1, 0, 1].contains(&x_diff) {
             if y_diff == 2 {
                 self.y = self.y - 1;
             }
             if y_diff == -2 {
                 self.y = self.y + 1;
             }
-        }
 
-        if x_diff == 1 {
-            if y_diff == 2 {
-                self.x = self.x - 1;
-                self.y = self.y - 1;
-            }
-            if y_diff == -2 {
-                self.x = self.x - 1;
-                self.y = self.y + 1;
-            }
-        }
-        if x_diff == -1 {
-            if y_diff == 2 {
-                self.x = self.x + 1;
-                self.y = self.y - 1;
-            }
-            if y_diff == -2 {
-                self.x = self.x + 1;
-                self.y = self.y + 1;
-            }
+            // This will move x diagonally
+            self.x = self.x + (x_diff * -1);
         }
     }
 
