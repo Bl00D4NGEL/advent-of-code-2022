@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 fn main() {
     let contents = include_str!("./input.txt");
 
@@ -10,7 +12,10 @@ fn main() {
         }
 
         let mut split = line.split(" ");
+
+        // This should be "addx" all the time and can discarded
         split.next();
+
         let amount = match split.next() {
             None => 0,
             Some(v) => match v.parse::<i32>() {
@@ -23,14 +28,33 @@ fn main() {
         instructions.push(amount);
     }
 
-    let requested_indexes: Vec<i32> = vec![20, 60, 100, 140, 180, 220];
+    println!(
+        "Day 10 part 1: {}",
+        (vec![20, 60, 100, 140, 180, 220])
+            .into_iter()
+            .map(|i| get_register_value_at_index(i, &instructions) * i)
+            .sum::<i32>()
+    );
 
-    let mapped = requested_indexes
-        .into_iter()
-        .map(|i| get_register_value_at_index(i, &instructions) * i)
-        .collect::<Vec<i32>>();
+    let mut current_x = 1;
+    let mut display: Vec<&str> = vec![];
+    let mut cycle = 0;
+    instructions.iter().for_each(|instruction| {
+        current_x = current_x + instruction;
 
-    println!("Day 10 part 1: {}", mapped.iter().sum::<i32>());
+        if current_x.abs_diff(cycle % 40) <= 1 {
+            display.push("#");
+        } else {
+            display.push(".");
+        }
+
+        cycle = cycle + 1;
+    });
+
+    println!("Day 10 part 2:");
+    display
+        .chunks(40)
+        .for_each(|line| println!("{}", line.join("")));
 }
 
 fn get_register_value_at_index(index: i32, instructions: &Vec<i32>) -> i32 {
