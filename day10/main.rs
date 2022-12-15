@@ -1,5 +1,3 @@
-use std::ops::Range;
-
 fn main() {
     let contents = include_str!("./input.txt");
 

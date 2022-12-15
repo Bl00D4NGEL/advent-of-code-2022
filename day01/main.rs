@@ -1,4 +1,4 @@
-use std::{fs, vec};
+use std::vec;
 
 fn main() {
     let contents = include_str!("./input.txt");
