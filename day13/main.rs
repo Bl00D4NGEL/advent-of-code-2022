@@ -1,5 +1,3 @@
-use std::process::id;
-
 use serde_json::Value;
 
 fn main() {
@@ -14,23 +12,23 @@ fn main() {
     let correctly_sorted_indexes_sum = lines
         .chunks(2)
         .enumerate()
-        .filter_map(|(idx, chunk)| {
-            if are_values_sorted_correctly(&parse_json(chunk.get(0)?), &parse_json(chunk.get(1)?))
-                .unwrap()
-            {
-                println!("{} Sorted", idx + 1);
-                Some(idx + 1)
-            } else {
-                println!("{} Not sorted", idx + 1);
-                None
+        .filter_map(|(idx, chunk)| -> Option<usize> {
+            match are_values_sorted_correctly(
+                &parse_json(chunk.get(0)?),
+                &parse_json(chunk.get(1)?),
+            ) {
+                None => None,
+                Some(v) => {
+                    if v {
+                        Some(idx + 1)
+                    } else {
+                        None
+                    }
+                }
             }
         })
         .sum::<usize>();
 
-    // 413 too low
-    // 789 too low
-    // 4973 too high
-    // 4967 incorrect
     println!("Day 13 part 1: {}", correctly_sorted_indexes_sum);
 }
 
