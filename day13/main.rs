@@ -30,6 +30,49 @@ fn main() {
         .sum::<usize>();
 
     println!("Day 13 part 1: {}", correctly_sorted_indexes_sum);
+    // Given that we need to sort the lists and then find the index of the "divider packets"
+    // we can simplify the structure by flattening the structure to a 1d array of digits
+    // and then sort them by number
+
+    let mut packets = lines
+        .iter()
+        .map(|l| {
+            let replaced = l.replace("[", "").replace("]", "");
+            let mut split = replaced.split(",");
+            let first_digit = split
+                .next()
+                .expect("At least one item should be returned from split");
+
+            match first_digit.parse::<i32>() {
+                Ok(v) => v,
+                Err(_) => -1,
+            }
+        })
+        .collect::<Vec<i32>>();
+
+    // add divider packets
+    packets.push(2);
+    packets.push(6);
+
+    packets.sort();
+
+    let mut decoder_key = 1;
+    // Assuming the packets are ordered and we use pop to remove the element the divider packets need to be sorted in descending order
+    // It's ugly but it works :)
+    let mut divider_packets: Vec<i32> = vec![6, 2];
+
+    for (idx, packet) in packets.iter().enumerate() {
+        if divider_packets.contains(packet) {
+            decoder_key = decoder_key * (idx + 1);
+            divider_packets.pop();
+        }
+    }
+
+    if divider_packets.len() != 0 {
+        panic!("Not all divider packets found in packets!");
+    }
+
+    println!("Day 13 part 2: {}", decoder_key);
 }
 
 fn parse_json(value: &&str) -> Value {
@@ -49,13 +92,9 @@ fn are_values_sorted_correctly(first: &Value, second: &Value) -> Option<bool> {
     }
 
     if first.is_number() && second.is_array() {
-        println!("First is number {:?}, second is array {:?}", first, second);
-        // dbg!(compare_number_to_array(first, second));
         return are_values_sorted_correctly(&convert_to_array(first), second);
     }
 
-    println!("First is array {:?}, second is number {:?}", first, second);
-    // dbg!(compare_array_to_number(first, second));
     return are_values_sorted_correctly(first, &convert_to_array(second));
 }
 
@@ -72,10 +111,6 @@ fn are_numbers_sorted_correctly(first: i64, second: i64) -> Option<bool> {
 }
 
 fn are_arrays_sorted_correctly(first: Vec<Value>, second: Vec<Value>) -> Option<bool> {
-    // if second.len() == 0 {
-    //     return false;
-    // }
-
     for (idx, first_val) in first.iter().enumerate() {
         let second_val = match second.get(idx) {
             None => return Some(false), // Right side ran out of items first -> List is NOT sorted correctly
@@ -87,8 +122,6 @@ fn are_arrays_sorted_correctly(first: Vec<Value>, second: Vec<Value>) -> Option<
             return is_valid;
         }
     }
-
-    dbg!(first.len(), second.len());
 
     if first.len() < second.len() {
         Some(true)
